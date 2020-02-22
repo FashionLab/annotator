@@ -43,7 +43,7 @@ ConfigLayout = html.Div([
             id='folder-select',
             type='text',
             placeholder='Select folder...',
-            value=os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'data')),
+            value=os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'data', 'corpus')),
             style=FolderSelectStyle
         ),
         html.Button('Go',

@@ -1,11 +1,12 @@
 from dash.dependencies import Input, Output, State
 import dash_html_components as html
-from ..layout import ConfigLayout, MainLayout, TITLE, ClassUploadStyle, FolderSelectStyle, ClassUploadChildren
+from ..layout import ConfigLayout, MainLayout, TITLE, ClassUploadStyle, FolderSelectStyle, ClassUploadChildren, MainContent
 from ..app import app, appConfigure
 
 
 @app.callback([Output('config-content', 'style'),
                Output('main-content', 'style'),
+               Output('main-content', 'children'),
                Output('class-upload', 'style'),
                Output('folder-select', 'style'),
                Output('class-upload', 'children')],
@@ -25,9 +26,10 @@ def update_output(classes, data_folder, go_button, classes_filename):
         # check if ready
         if appConfigure.classes() and appConfigure.dataFolder():
             ConfigLayout.style['display'] = 'none'
-            print('here!!!!')
+            appConfigure.load()
             return {'display': 'none'}, \
                    {'display': 'flex', 'flexDirection': 'column'}, \
+                   MainContent(), \
                    ClassUploadStyle, \
                    FolderSelectStyle, \
                    ClassUploadChildren[0]
@@ -45,6 +47,7 @@ def update_output(classes, data_folder, go_button, classes_filename):
     appConfigure.incGoButton(go_button)
     return {'display': 'flex', 'flexDirection': 'column'}, \
            {'display': 'none'}, \
+           [], \
            ClassUploadStyle, \
            FolderSelectStyle, \
            ClassUploadChildren[0]

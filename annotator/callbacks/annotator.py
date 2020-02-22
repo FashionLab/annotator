@@ -1,6 +1,5 @@
 from dash.dependencies import Input, Output, State
 import dash_html_components as html
-from ..layout import ConfigLayout, MainLayout, TITLE, ClassUploadStyle, FolderSelectStyle, ClassUploadChildren
 from ..utils import load_image
 from ..app import app, appConfigure
 

@@ -5,26 +5,40 @@ import dash_table
 from ..app import appConfigure
 from ..utils import load_image
 
+BRAND_FILTER = 'brand-filter'
+ORDER_DROPDOWN = 'order-dropdown'
+ITEM_VALID = 'item-valid'
+ITEM_AD_TYPE = 'item-ad-type'
+ITEM_VIEW = 'item-view'
+ITEM_SEX = 'item-sex'
+ITEM_COLOR = 'item-color'
+ITEM_CLASS = 'item-class'
+ITEM_NOTES = 'item_notes'
+MAIN_CONTENT = 'main-content'
 
-
-
-MainLayout = html.Div([], id='main-content')
+MainLayout = html.Div([],
+                      id=MAIN_CONTENT,
+                      style={
+                          'display': 'flex',
+                          'flexDirection': 'columns',
+                          'height': '100%'
+                      })
 
 MainContent = lambda: html.Div([
         html.Div([
             html.Label('Brand'),
             dcc.Dropdown(
-                id='brand_filter',
+                id=BRAND_FILTER,
                 options=appConfigure.files_by_brand()
             ),
             html.Label('Order'),
             dcc.Dropdown(
-                id='order',
+                id=ORDER_DROPDOWN,
                 options=[{'label': x, 'value': x} for x in ('random', 'sorted', 'unlabeled')],
                 style={'marginBottom': '10px'}
             ),
             dash_table.DataTable(id='table',
-                                 columns=[{'name': i, 'id': i} for i in appConfigure.files()[0].keys() if i != 'path'] if len(appConfigure.files() or []) > 0 else [],
+                                 columns=[{'name': i, 'id': i} for i in appConfigure.files()[0].keys() if i != 'path'],
                                  data=appConfigure.files(),
                                  page_action="native",
                                  page_current=0,
@@ -41,43 +55,82 @@ MainContent = lambda: html.Div([
                                  style_header={'backgroundColor': 'rgb(230, 230, 230)',
                                                'fontWeight': 'bold',
                                                'textAlign': 'center'}),
-        ], style={'columnCount': 1, 'height': '100%'}),
+        ], style={
+            'height': '100%',
+            'display': 'flex',
+            'flexDirection': 'column',
+            'width': '50%',
+            'margin': '5px',
+        }),
         html.Div([
             html.Label('Preview'),
             html.Img(id='preview',
-                     src=load_image(appConfigure.files()[0]['path']) if len(appConfigure.files() or []) else '',
+                     src=load_image(appConfigure.files()[0]['path']),
                      style={'maxHeight': '325px',
                             'height': '325px'}),
-            dcc.RadioItems(
+            dcc.Dropdown(
+                id=ITEM_VALID,
                 options=[
                     {'label': 'Valid', 'value': 'valid'},
                     {'label': 'Invalid', 'value': 'invalid'},
                 ],
-                labelStyle={'display': 'inline-block'},
                 value='valid'
             ),
+            html.Label('Class'),
+            dcc.Dropdown(
+                id=ITEM_CLASS,
+                options=appConfigure.classes(),
+                placeholder='Class...',
+                style={'width': '100%'}
+            ),
+            html.Label('Ad Type'),
+            dcc.Dropdown(
+                id=ITEM_VALID,
+                options=[
+                    {'label': 'Single Item', 'value': 'single'},
+                    {'label': 'Multi Item', 'value': 'multi'},
+                    {'label': 'Ad', 'value': 'ad'},
+                ],
+                value='valid'
+            ),
+            html.Label('View'),
+            dcc.Dropdown(
+                id=ITEM_VIEW,
+                options=[
+                    {'label': 'Top', 'value': 'top'},
+                    {'label': 'Front', 'value': 'front'},
+                    {'label': 'Back', 'value': 'back'},
+                    {'label': 'Side', 'value': 'side'},
+                    {'label': 'Bottom', 'value': 'bottom'},
+                    {'label': 'Other', 'value': 'other'},
+                ],
+                value='either'
+            ),
             html.Label('M/F'),
-            dcc.RadioItems(
+            dcc.Dropdown(
+                id=ITEM_SEX,
                 options=[
                     {'label': 'Male', 'value': 'male'},
                     {'label': 'Female', 'value': 'female'},
                     {'label': 'Either', 'value': 'either'},
                 ],
-                labelStyle={'display': 'inline-block'},
                 value='either'
             ),
-            html.Label('Class'),
+            html.Label('Color'),
             dcc.Dropdown(
-                id='class',
-                options=appConfigure.classes() or [],
-                placeholder='Class...',
-                style={'width': '100%'}
+                id=ITEM_COLOR,
+                options=[
+                    {'label': 'Monochromatic', 'value': 'mono'},
+                    {'label': 'Colorful', 'value': 'colorful'},
+                    {'label': 'Neutral', 'value': 'neutral'},
+                ],
+                value='neutral'
             ),
             html.Label('Notes'),
-            dcc.Input(value='',
-                      type='text',
-                      style={'width': '100%',
-                             'marginBottom': '10px'}),
+            dcc.Textarea(id=ITEM_NOTES,
+                         value='',
+                         style={'width': '100%',
+                                'marginBottom': '10px'}),
             html.Div([
                 html.Button('Previous',
                             id='prev',
@@ -87,14 +140,18 @@ MainContent = lambda: html.Div([
                             id='next',
                             style={'width': '50%',
                                    'marginBottom': '10px'}),
-            ]),
-            html.Button('Save',
-                        id='save',
-                        style={'width': '50%',
-                               'marginLeft': '25%'}),
-        ], style={'columnCount': 1,
-                  'height': '100%',
-                  'width': '100%'})
-    ], style={'columnCount': 2,
-              'height': '100%',
-              'width': '100%'})
+            ], style={
+                'width': '100%',
+                'margin': 'auto',
+            }),
+        ], style={      
+            'height': '100%',
+            'width': '50%',
+            'margin': '5px',
+        })
+    ], style={
+        'display': 'flex',
+        'flexDirection': 'row',
+        'height': '100%',
+        'width': '100%'
+    })

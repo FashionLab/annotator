@@ -1,3 +1,4 @@
+import base64
 import os
 import os.path
 
@@ -6,6 +7,7 @@ class AppConfigure(object):
     def __init__(self):
         self._classes = None
         self._data_folder = None
+        self._data_file = None
         self._go_button = 0
 
         self._count = 0
@@ -22,7 +24,9 @@ class AppConfigure(object):
     # Configuration #
     #################
     def setClasses(self, classes):
-        self._classes = classes
+        content_type, content_string = classes.split(',')
+        decoded = base64.b64decode(content_string).decode('ascii')
+        self._classes = decoded.split('\n')
 
     def classes(self):
         return self._classes
@@ -33,6 +37,12 @@ class AppConfigure(object):
     def dataFolder(self):
         return self._data_folder
 
+    def setDataFile(self, data_file):
+        self._data_file = data_file
+
+    def dataFile(self):
+        return self._data_file
+
     def incGoButton(self, num):
         if num is None:
             num = 0
@@ -42,7 +52,7 @@ class AppConfigure(object):
         return self._go_button
 
     def load(self):
-        brands = [_ for _ in os.listdir(self._data_folder) if not (_ in ('data.csv', 'classes.txt', '.DS_Store') or _.endswith('_img_cache'))]
+        brands = [_.title() for _ in os.listdir(self._data_folder) if not (_ in ('data.csv', 'classes.txt', '.DS_Store') or _.endswith('_img_cache'))]
 
         self._classes = [
             {'label': _.strip().title(), 'value': _.strip()} for _ in sorted(self._classes)
@@ -52,6 +62,7 @@ class AppConfigure(object):
         files_by_brand = {}
 
         for folder in brands:
+            folder = folder.lower()
             files_by_brand[folder] = []
             for file in sorted(os.listdir(os.path.join(self._data_folder, folder))):
                 path = os.path.join(self._data_folder, folder, file)

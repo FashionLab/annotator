@@ -1,5 +1,6 @@
 from dash.dependencies import Input, Output, State
 import dash_html_components as html
+from ..layout import ITEM_VALID, ITEM_AD_TYPE, ITEM_VIEW, ITEM_SEX, ITEM_COLOR, ITEM_CLASS, ITEM_NOTES
 from ..utils import load_image
 from ..app import app, appConfigure
 
@@ -19,7 +20,41 @@ def update_next(next, prev, page):
     if prev and prev > appConfigure._prev_clicks:
         appConfigure._prev_clicks = prev
         appConfigure._selected = max(appConfigure._selected-1, 0)
+
     return [{'if': {'row_index': 'odd'},
              'backgroundColor': 'rgb(248, 248, 248)'},
             {'if': {'row_index': appConfigure._selected},
-             'backgroundColor': 'rgb(255, 0, 0)'}], load_image(appConfigure.files()[(appConfigure._current_page or [0])[appConfigure._selected or 0]]['path']) if appConfigure.files() else ''
+             'backgroundColor': 'rgb(255, 0, 0)'}], load_image(appConfigure.files((appConfigure._current_page or [0])[appConfigure._selected])['path']) if appConfigure.files() else ''
+
+@app.callback([Output("hidden-div1", "value")],
+              [Input(ITEM_VALID, 'value'),
+              Input(ITEM_CLASS, 'value'),
+              Input(ITEM_AD_TYPE, 'value'),
+              Input(ITEM_VIEW, 'value'),
+              Input(ITEM_SEX, 'value'),
+              Input(ITEM_COLOR, 'value'),
+              Input(ITEM_NOTES, 'value')]
+              )
+def update_data(item_valid, item_class, item_ad_type, item_view, item_sex, item_color, item_notes):
+    if item_valid is not None:
+        appConfigure.store("valid", item_valid)
+
+    if item_class is not None:
+        appConfigure.store("class", item_class)
+
+    if item_ad_type is not None:
+        appConfigure.store("ad", item_ad_type)
+
+    if item_view is not None:
+        appConfigure.store("view", item_view)
+
+    if item_sex is not None:
+        appConfigure.store("sex", item_sex)
+
+    if item_color is not None:
+        appConfigure.store("color", item_color)
+
+    if item_notes is not None:
+        appConfigure.store("notes", item_notes)
+
+    return ['']

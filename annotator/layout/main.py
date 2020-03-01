@@ -16,7 +16,11 @@ ITEM_CLASS = 'item-class'
 ITEM_NOTES = 'item_notes'
 MAIN_CONTENT = 'main-content'
 
-MainLayout = html.Div([],
+
+MainLayoutEmpty = [dcc.Dropdown(id=BRAND_FILTER, options=[]),
+                   dcc.Dropdown(id=ORDER_DROPDOWN, options=[])]
+
+MainLayout = html.Div(MainLayoutEmpty,
                       id=MAIN_CONTENT,
                       style={
                           'display': 'flex',
@@ -29,13 +33,15 @@ MainContent = lambda: html.Div([
             html.Label('Brand'),
             dcc.Dropdown(
                 id=BRAND_FILTER,
-                options=appConfigure.files_by_brand()
+                options=appConfigure.files_by_brand(),
+                value=appConfigure.brand_filter(),
             ),
             html.Label('Order'),
             dcc.Dropdown(
                 id=ORDER_DROPDOWN,
                 options=[{'label': x, 'value': x} for x in ('random', 'sorted', 'unlabeled')],
-                style={'marginBottom': '10px'}
+                style={'marginBottom': '10px'},
+                value=appConfigure.order(),
             ),
             dash_table.DataTable(id='table',
                                  columns=[{'name': i, 'id': i} for i in appConfigure.files()[0].keys() if i != 'path'],
@@ -85,13 +91,12 @@ MainContent = lambda: html.Div([
             ),
             html.Label('Ad Type'),
             dcc.Dropdown(
-                id=ITEM_VALID,
+                id=ITEM_AD_TYPE,
                 options=[
                     {'label': 'Single Item', 'value': 'single'},
                     {'label': 'Multi Item', 'value': 'multi'},
                     {'label': 'Ad', 'value': 'ad'},
-                ],
-                value='valid'
+                ]
             ),
             html.Label('View'),
             dcc.Dropdown(
@@ -131,6 +136,7 @@ MainContent = lambda: html.Div([
                          value='',
                          style={'width': '100%',
                                 'marginBottom': '10px'}),
+            html.Div(id='hidden-div1', style={'display':'none'}),
             html.Div([
                 html.Button('Previous',
                             id='prev',

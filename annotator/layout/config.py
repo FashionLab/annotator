@@ -17,10 +17,6 @@ ClassUploadChildren = [html.Div([
                 'Drag and Drop or ',
                 html.A('Select Files')
             ])]
-DataFileChildren = [html.Div([
-                'Drag and Drop or ',
-                html.A('Select Files')
-            ])]
 
 CONFIG_CONTENT = 'config-content'
 CLASS_UPLOAD = 'class-upload'
@@ -45,11 +41,12 @@ ConfigLayout = html.Div([
             style=SelectStyle
         ),
         html.H3('Data Output File'),
-        dcc.Upload(
+        dcc.Input(
             id=DATA_OUTPUT,
-            children=DataFileChildren,
-            style=SelectStyle,
-            multiple=False,
+            type='text',
+            placeholder='Select output...',
+            value=os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'data', 'corpus', 'data.csv')),
+            style=SelectStyle
         ),
         html.Button('Go',
                     id=GO_BUTTON,

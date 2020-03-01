@@ -4,5 +4,6 @@ import dash_html_components as html
 from .configure import AppConfigure
 
 app = dash.Dash(__name__)
+app.title = "annotator"
 app.config.suppress_callback_exceptions = True
 appConfigure = AppConfigure()

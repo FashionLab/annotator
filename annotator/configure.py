@@ -138,10 +138,7 @@ class AppConfigure(object):
     def selected(self):
         return self._selected
 
-    def store(self, key, value):
-        print(self._active_id, key, value)
-        print(self._data)
-
+    def storeRecord(self, key, value):
         file = self._files_by_id[self._active_id]
         name = file["name"]
         folder = file["folder"]
@@ -151,6 +148,15 @@ class AppConfigure(object):
             self._data.loc[(name, folder), :] = ''
 
         self._data.loc[(name, folder), :][key] = value
-        print(self._data.loc[(name, folder), :])
-
         self._data.to_csv(self._data_file, header=self._data.columns)
+
+    def loadRecord(self, key):
+        file = self._files_by_id[self._active_id]
+        name = file["name"]
+        folder = file["folder"]
+
+        if not any(self._data.index.isin([(name, folder)])):
+            # does not exist
+            return ""
+        return self._data.loc[(name, folder), :][key]
+        

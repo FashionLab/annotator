@@ -79,9 +79,7 @@ MainContent = lambda: html.Div([
                 options=[
                     {'label': 'Valid', 'value': 'valid'},
                     {'label': 'Invalid', 'value': 'invalid'},
-                ],
-                value='valid'
-            ),
+                ]            ),
             html.Label('Class'),
             dcc.Dropdown(
                 id=ITEM_CLASS,
@@ -108,8 +106,7 @@ MainContent = lambda: html.Div([
                     {'label': 'Side', 'value': 'side'},
                     {'label': 'Bottom', 'value': 'bottom'},
                     {'label': 'Other', 'value': 'other'},
-                ],
-                value='either'
+                ]
             ),
             html.Label('M/F'),
             dcc.Dropdown(
@@ -119,7 +116,6 @@ MainContent = lambda: html.Div([
                     {'label': 'Female', 'value': 'female'},
                     {'label': 'Either', 'value': 'either'},
                 ],
-                value='either'
             ),
             html.Label('Color'),
             dcc.Dropdown(
@@ -129,7 +125,6 @@ MainContent = lambda: html.Div([
                     {'label': 'Colorful', 'value': 'colorful'},
                     {'label': 'Neutral', 'value': 'neutral'},
                 ],
-                value='neutral'
             ),
             html.Label('Notes'),
             dcc.Textarea(id=ITEM_NOTES,

@@ -28,6 +28,8 @@ def update_next(next, prev, page):
         appConfigure._prev_clicks = prev
         appConfigure._selected = max(appConfigure._selected-1, 0)
 
+    appConfigure._selected = min(appConfigure._selected, appConfigure._max_per_page - 1)
+
     return [{'if': {'row_index': 'odd'},
              'backgroundColor': 'rgb(248, 248, 248)'},
             {'if': {'row_index': appConfigure._selected},

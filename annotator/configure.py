@@ -108,10 +108,9 @@ class AppConfigure(object):
         self._files_by_id = files_by_id
 
         # name,folder,path,valid,class,ad,view,sex,color,notes
-        self._data = pd.read_csv(self._data_file, header=0)
+        self._data = pd.read_csv(self._data_file, header=0).fillna("")
         for col in self._data:
             self._data[col] = self._data[col].astype(str)
-
         self._data.set_index(["name", "folder"], inplace=True)
         self._loaded = True
 
@@ -149,7 +148,7 @@ class AppConfigure(object):
             self._data.loc[(name, folder), :] = ''
 
         self._data.loc[(name, folder), :][key] = value
-        self._data.to_csv(self._data_file, header=self._data.columns)
+        self._data.fillna("").to_csv(self._data_file, header=self._data.columns)
 
     def loadRecord(self, key):
         file = self._files_by_id[self._active_id]

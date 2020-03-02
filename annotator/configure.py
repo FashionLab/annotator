@@ -24,6 +24,7 @@ class AppConfigure(object):
         self._next_clicks = 0
         self._prev_clicks = 0
         self._current_page = 0
+        self._max_per_page = 17
 
         self._data = None
         self._active_id = 0

@@ -48,7 +48,7 @@ MainContent = lambda: html.Div([
                                  data=appConfigure.files(),
                                  page_action="native",
                                  page_current=0,
-                                 page_size=18,
+                                 page_size=appConfigure._max_per_page,
                                  row_selectable=False,
                                  style_table={'maxHeight': '600px',
                                               'overflowY': 'scroll'},

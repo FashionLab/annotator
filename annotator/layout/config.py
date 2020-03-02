@@ -50,6 +50,7 @@ ConfigLayout = html.Div([
         ),
         html.Button('Go',
                     id=GO_BUTTON,
+                    accessKey="g",
                     style={
                         'marginTop': '1.5rem',
                         'marginLeft': 'auto',

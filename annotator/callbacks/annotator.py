@@ -23,18 +23,19 @@ def update_next(next, prev, page):
         appConfigure._current_page = page
     if next and next > appConfigure._next_clicks:
         appConfigure._next_clicks = next
-        appConfigure._selected += 1
+        appConfigure._selected = min(appConfigure._selected + 1, (appConfigure._current_page or [0])[-1])
+
     if prev and prev > appConfigure._prev_clicks:
         appConfigure._prev_clicks = prev
         appConfigure._selected = max(appConfigure._selected-1, 0)
 
-    appConfigure._selected = min(appConfigure._selected, appConfigure._max_per_page - 1)
+    selected = (appConfigure._current_page or [0])[appConfigure._selected]
 
     return [{'if': {'row_index': 'odd'},
              'backgroundColor': 'rgb(248, 248, 248)'},
             {'if': {'row_index': appConfigure._selected},
              'backgroundColor': 'rgb(255, 0, 0)'}], \
-            load_image(appConfigure.files((appConfigure._current_page or [0])[appConfigure._selected])['path']) if appConfigure.files() else '', \
+            load_image(appConfigure.files(selected)['path']) if appConfigure.files() else '', \
             appConfigure.loadRecord("valid"), \
             appConfigure.loadRecord("class"), \
             appConfigure.loadRecord("ad"), \

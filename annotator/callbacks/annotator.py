@@ -21,9 +21,10 @@ def update_next(next, prev, page):
     if page != appConfigure._current_page:
         appConfigure._selected = 0
         appConfigure._current_page = page
+
     if next and next > appConfigure._next_clicks:
         appConfigure._next_clicks = next
-        appConfigure._selected = min(appConfigure._selected + 1, (appConfigure._current_page or [0])[-1])
+        appConfigure._selected = min(appConfigure._selected + 1, len(appConfigure._current_page)-1)
 
     if prev and prev > appConfigure._prev_clicks:
         appConfigure._prev_clicks = prev

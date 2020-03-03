@@ -39,7 +39,7 @@ MainContent = lambda: html.Div([
             html.Label('Order'),
             dcc.Dropdown(
                 id=ORDER_DROPDOWN,
-                options=[{'label': x, 'value': x} for x in ('random', 'sorted', 'unlabeled')],
+                options=[{'label': x, 'value': x} for x in ('all', 'unlabeled')],
                 style={'marginBottom': '10px'},
                 value=appConfigure.order(),
             ),
@@ -79,7 +79,7 @@ MainContent = lambda: html.Div([
                 options=[
                     {'label': 'Valid', 'value': 'valid'},
                     {'label': 'Invalid', 'value': 'invalid'},
-                ]            ),
+                ]),
             html.Label('Class'),
             dcc.Dropdown(
                 id=ITEM_CLASS,

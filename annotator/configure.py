@@ -2,6 +2,7 @@ import base64
 import os
 import os.path
 import pandas as pd
+from tqdm import tqdm
 
 
 class AppConfigure(object):
@@ -12,7 +13,7 @@ class AppConfigure(object):
         self._go_button = 0
 
         self._brand_filter = "all"
-        self._order = "unlabeled"
+        self._order = "all"
 
         self._loaded = False
         self._count = 0
@@ -131,6 +132,11 @@ class AppConfigure(object):
         if id is not None:
             self._active_id = id
             return self._files_by_id[id]
+        if self._order == "unlabeled":
+            # return files that have no entry, or entry is valid but class not set
+            labeled_in_csv = self._data[((self._data["valid"] == "valid") & (self._data["class"] != "") | (self._data["valid"] == "invalid"))]
+            skip = set(labeled_in_csv.index.tolist())
+            return [f for f in self._files_by_brand[self._brand_filter] if (f["name"], f["folder"]) not in skip]
         return self._files_by_brand[self._brand_filter]
 
     def selected(self):

@@ -6,4 +6,4 @@ Some Configuration Options
 ![](https://raw.githubusercontent.com/FashionLab/annotator/master/docs/img/config.png)
 
 Annotation (with redactions)
-![](https://raw.githubusercontent.com/FashionLab/annotator/master/docs/img/annotate.png)
+![](https://raw.githubusercontent.com/FashionLab/annotator/master/docs/img/annotate2.png)

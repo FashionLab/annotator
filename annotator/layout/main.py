@@ -80,13 +80,6 @@ MainContent = lambda: html.Div([
                     {'label': 'Valid', 'value': 'valid'},
                     {'label': 'Invalid', 'value': 'invalid'},
                 ]),
-            html.Label('Class'),
-            dcc.Dropdown(
-                id=ITEM_CLASS,
-                options=appConfigure.classes(),
-                placeholder='Class...',
-                style={'width': '100%'}
-            ),
             html.Label('Ad Type'),
             dcc.Dropdown(
                 id=ITEM_AD_TYPE,
@@ -95,6 +88,13 @@ MainContent = lambda: html.Div([
                     {'label': 'Multi Item', 'value': 'multi'},
                     {'label': 'Ad', 'value': 'ad'},
                 ]
+            ),
+            html.Label('Class'),
+            dcc.Dropdown(
+                id=ITEM_CLASS,
+                options=appConfigure.classes(),
+                placeholder='Class...',
+                style={'width': '100%'}
             ),
             html.Label('View'),
             dcc.Dropdown(

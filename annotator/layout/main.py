@@ -39,7 +39,7 @@ MainContent = lambda: html.Div([
             html.Label('Order'),
             dcc.Dropdown(
                 id=ORDER_DROPDOWN,
-                options=[{'label': x, 'value': x} for x in ('random', 'sorted', 'unlabeled')],
+                options=[{'label': x, 'value': x} for x in ('all', 'unlabeled')],
                 style={'marginBottom': '10px'},
                 value=appConfigure.order(),
             ),
@@ -48,7 +48,7 @@ MainContent = lambda: html.Div([
                                  data=appConfigure.files(),
                                  page_action="native",
                                  page_current=0,
-                                 page_size=18,
+                                 page_size=appConfigure._max_per_page,
                                  row_selectable=False,
                                  style_table={'maxHeight': '600px',
                                               'overflowY': 'scroll'},
@@ -79,14 +79,7 @@ MainContent = lambda: html.Div([
                 options=[
                     {'label': 'Valid', 'value': 'valid'},
                     {'label': 'Invalid', 'value': 'invalid'},
-                ]            ),
-            html.Label('Class'),
-            dcc.Dropdown(
-                id=ITEM_CLASS,
-                options=appConfigure.classes(),
-                placeholder='Class...',
-                style={'width': '100%'}
-            ),
+                ]),
             html.Label('Ad Type'),
             dcc.Dropdown(
                 id=ITEM_AD_TYPE,
@@ -95,6 +88,13 @@ MainContent = lambda: html.Div([
                     {'label': 'Multi Item', 'value': 'multi'},
                     {'label': 'Ad', 'value': 'ad'},
                 ]
+            ),
+            html.Label('Class'),
+            dcc.Dropdown(
+                id=ITEM_CLASS,
+                options=appConfigure.classes(),
+                placeholder='Class...',
+                style={'width': '100%'}
             ),
             html.Label('View'),
             dcc.Dropdown(
@@ -115,6 +115,9 @@ MainContent = lambda: html.Div([
                     {'label': 'Male', 'value': 'male'},
                     {'label': 'Female', 'value': 'female'},
                     {'label': 'Either', 'value': 'either'},
+                    {'label': 'Bably', 'value': 'baby'},
+                    {'label': 'Boy', 'value': 'boy'},
+                    {'label': 'Girl', 'value': 'girl'},
                 ],
             ),
             html.Label('Color'),
@@ -136,11 +139,13 @@ MainContent = lambda: html.Div([
                 html.Button('Previous',
                             id='prev',
                             style={'width': '50%',
-                                   'marginBottom': '10px'}),
+                                   'marginBottom': '10px'},
+                            accessKey="p"),
                 html.Button('Next',
                             id='next',
                             style={'width': '50%',
-                                   'marginBottom': '10px'}),
+                                   'marginBottom': '10px'},
+                            accessKey="n"),
             ], style={
                 'width': '100%',
                 'margin': 'auto',

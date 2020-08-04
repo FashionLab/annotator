@@ -79,7 +79,7 @@ class AppConfigure(object):
         if self._loaded:
             return
 
-        brands = [_.title() for _ in os.listdir(self._data_folder) if not (_ in ('data.csv', 'classes.txt', '.DS_Store') or _.endswith('_img_cache'))]
+        brands = [_.title() for _ in os.listdir(self._data_folder) if not (_ in ('data.csv', 'classes.txt', '.DS_Store', '._.DS_Store') or _.endswith('_img_cache'))]
         brands.append("all")
 
         files = []
@@ -95,12 +95,29 @@ class AppConfigure(object):
             files_by_brand[folder] = []
 
             for file in sorted(os.listdir(os.path.join(self._data_folder, folder))):
+                if file in ('.DS_Store', '._.DS_Store'):
+                    continue
                 path = os.path.join(self._data_folder, folder, file)
-                files.append({'id': self._count, 'path': path, 'name': file, 'folder': folder})
+
+                if os.path.isdir(path):
+                    subfolder = file
+                    for file in sorted(os.listdir(os.path.join(self._data_folder, folder, subfolder))):
+                        if file in ('.DS_Store', '._.DS_Store'):
+                            continue
+                        path = os.path.join(self._data_folder, folder, subfolder, file)
+                        files.append({'id': self._count, 'path': path, 'name': file, 'folder': folder, 'sub': subfolder})
+                        files_by_brand[folder].append(files[-1])
+                        files_by_brand["all"].append(files[-1])
+                        files_by_id[self._count] = files[-1]
+                        self._count += 1
+                    continue
+
+                files.append({'id': self._count, 'path': path, 'name': file, 'folder': folder, 'sub': ''})
                 files_by_brand[folder].append(files[-1])
                 files_by_brand["all"].append(files[-1])
                 files_by_id[self._count] = files[-1]
                 self._count += 1
+
 
         self._files = files
         self._files_by_brand = files_by_brand
@@ -149,6 +166,10 @@ class AppConfigure(object):
         name = file["name"]
         folder = file["folder"]
 
+        if key == 'class':
+            # move to subfolder
+            os.makedirs(os.path.join(self._data_folder, folder, key), exist_ok=True)
+
         if not any(self._data.index.isin([(name, folder)])):
             # does not exist
             self._data.loc[(name, folder), :] = ''
@@ -163,5 +184,11 @@ class AppConfigure(object):
 
         if not any(self._data.index.isin([(name, folder)])):
             # does not exist
+            if key == 'class' and file['sub']:
+                return file['sub']
             return ""
-        return self._data.loc[(name, folder), :][key]
+        ret = self._data.loc[(name, folder), :][key]
+
+        if key == 'class' and not ret and file['sub']:
+            return file['sub']
+        return ret
